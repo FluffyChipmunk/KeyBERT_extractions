@@ -1,0 +1,43 @@
+,Utterred Sentence ,,,Suggestted ASL (Sytem Suggested),Display Latency ,Accuracy of Toy of interest detection (0/1),WER (manual annotation),Context-responsiveness (0/1) (manual annotation),Suggestted ASL (user preference)
+Description,,,,,,we need literature review for this ,,"Hearing Parents, Deaf Parents","ASL expert, Hearing Parents, Deaf Parents"
+Bus,You are driving the bus.,bus,5,Driving,0.64,1,,,Driving
+,2 people are in the bus.,bus,6,People,0.52,1,,,People
+,Put it inside the bus.,bus,5,Bus,0.21,1,,,Bus
+,You ride the bus to go to school.,bus,8,School,0.36,0,,,School
+,The bus has wheels.,bus,4,Wheels,0.25,1,,,Wheels
+,The bus is yellow.,bus,4,yellow,0.26,1,,,yellow
+,Put the bus on the table.,bus,6,Bus,0.28,1,,,Bus
+,The bus has seats.,bus,4,Seats,0.23,1,,,Seats
+,The wheels on the bus go round and round.,bus,9,Wheels,0.36,1,,,Wheels
+,THe buses are racing.,buses,4,Race,0.24,0,,,Race
+Firetruck,This is a firetruck.,firetruck,4,Firetruck,0.26,1,,,Firetruck
+,Bus and firetruck have wheels.,bus,5,Wheels,0.34,1,,,Wheels
+,The firetruck is red.,firetruck,4,Red,0.28,1,,,Red
+,The firetruck has a water hose.,firetruck,6,Water,0.31,1,,,Water
+,The firetruck helps people.,firetruck,4,Help,0.27,1,,,Help
+,The firetruck has a load siren.,firetruck,6,Loud,0.35,1,,,Loud
+Red Bus,You have the red bus.,bus,5,Red bus,0.29,1,,,Red bus
+,Wheels make the car go.,,4,wheels,0.28,1,,,wheels
+,See the wheels.,,3,wheeks,0.23,1,,,wheeks
+,All of the cars have wheels.,,6,wheels,0.29,1,,,wheels
+,See the cars.,,3,Cars,0.22,1,,,Cars
+,The red bus is two stories tall.,,7,Red bus,0.29,1,,,Red bus
+,The bus is driving down the street. ,,7,Driving,0.32,1,,,Driving
+,Uh oh! The buss fell.,,5,Fall ,0.18,0,,,Fall 
+,Look at the bus go.,,5,Bus,0.24,0,,,Bus
+Policeman ,He looks like Dad.,,4,Dad,0.27,1,,,Dad
+,The policeman helps people.,people,4,Help,0.26,1,,,Help
+,The policeman works with the firetruck.,,6,Policeman,0.28,1,,,Policeman
+,The policeman has his own car.,,6,Policeman,0.18,1,,,Policeman
+,The policeman is waving.,,4,Waving,0.19,0,,,Waving
+,Look at the policeman's hat.,,5,Hat,0.18,0,,,Hat
+,The uniform of the policeman is blue.,,7,Blue,0.2,1,,,Blue
+,The policeman stopped the bus. ,bus,5,Stop,0.32,0,,,Stop
+,The policeman is getting on the bus.,,7,Policeman,0.29,1,,,Policeman
+Girl Doll,We found the girl.,girl,4,Girl,0.29,1,,,Girl
+,The girl has a green shirt. ,,5,Green,0.3,0,,,Green
+,The girl rides the bus. ,,5,Rides,0.3,0,,,Rides
+,The boy and the girl are walking together.,boy,8,Together,0.33,0,,,Together
+,The girl is waving at you.,girl,6,Wave,0.33,1,,,Wave
+,,,5.256410256,,0.2876923077,0.7435897436,,,
+,he is a policeman ,,,,0.08585365573,,,,
