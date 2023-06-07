@@ -30,20 +30,24 @@ correctness = {
 
 
 for index, rec in enumerate(Madeleine, start=0):
-    if keywordRecs[index] == rec:
-        correctness.update({"keyword": correctness["keyword"] + 1})
-    if babyRecs[index] == rec:
-        correctness.update({"baby": correctness["baby"] + 1})
-    if mixedRecs[index] == rec:
-        correctness.update({"mixed": correctness["mixed"] + 1})
-    if currentRecs[index] == rec:
-        correctness.update({"current": correctness["current"] + 1})
+    recc = rec.strip()
+    if recc != '':
+        if recc != "no key word":
+            if keywordRecs[index] == recc:
+                correctness.update({"keyword": correctness["keyword"] + 1})
+            if babyRecs[index] == recc:
+                correctness.update({"baby": correctness["baby"] + 1})
+            if mixedRecs[index] == recc:
+                correctness.update({"mixed": correctness["mixed"] + 1})
+            if currentRecs[index] == recc:
+                correctness.update({"current": correctness["current"] + 1})
 
 totalRecs = 0
 
-for rec in currentRecs:
+for rec in Madeleine:
     if rec != '':
-        totalRecs = totalRecs+1
+        if rec.strip() != "no key word":
+            totalRecs = totalRecs+1
 
 print("total recs:" + str(totalRecs))
 
