@@ -3,9 +3,19 @@ import pandas as pd
 from pandas import *
 from keybert import KeyBERT
 from transformers.pipelines import pipeline
+import time
 hf_model = pipeline("feature-extraction", model="phueb/BabyBERTa-1") #BERT model trained on CHILDES data
 
+
+#USED FOR TRANSCRIPTIONS ONLY
+
 #dictionary with words as keys and frequencies as values
+kw_model = KeyBERT()
+
+start = time.time()
+kw_model.extract_keywords("this is a cat", top_n=1)
+end = time.time()
+print(end-start)
 
 def Extract(lst):
     return [item[0] for item in lst]
@@ -39,7 +49,8 @@ def get_keywordRecs(transcriptLines, model, max_keyphrase_length, num_keywords, 
     }
     for line in transcriptLines:
         #print(line)
-        if currentRecs[transcriptLines.index(line)] != '':
+        if True:
+        #if currentRecs[transcriptLines.index(line)] != '':
             currentKeywords = KeyBERTextract(line, model, max_keyphrase_length, num_keywords, max_frequency, keywordCounter)
             for word in currentKeywords:
                 updateKeywordCounter(keywordCounter, word)
@@ -49,7 +60,7 @@ def get_keywordRecs(transcriptLines, model, max_keyphrase_length, num_keywords, 
             keywordRecs.append('')
     return keywordRecs
 
-def get_mixedRecs(transcriptLines, model, max_keyphrase_length, num_keywords, max_frequency, max_line_length):
+'''def get_mixedRecs(transcriptLines, model, max_keyphrase_length, num_keywords, max_frequency, max_line_length):
     mixedRecs = []
     keywordCounter = {
     }
@@ -67,7 +78,7 @@ def get_mixedRecs(transcriptLines, model, max_keyphrase_length, num_keywords, ma
             # babyBERTRecs.append(KeyBERTextract(line, hf_model, 1, 1, float('inf')))
         else:
             mixedRecs.append('')
-    return mixedRecs
+    return mixedRecs'''
 
 
 '''def get_keyphraseRecs(transcriptLines, model, max_keyphrase_length, num_keywords, max_frequency):
@@ -88,7 +99,7 @@ def get_mixedRecs(transcriptLines, model, max_keyphrase_length, num_keywords, ma
             #else return get_keywordRecs(transcriptLines, 'all-MiniLM-L6-v2', 1, 1, frequency)[0]'''
 
 
-# reading CSV file
+''''# reading CSV file
 data = read_csv("20230405_group2_p2_results - Sheet6.csv", keep_default_na=False)
 
 # converting column data to list
@@ -121,5 +132,5 @@ print(keyphrases)
 #dataframe['babyBERTRecs'] = babyBERTRecs
 dataframe.to_csv('output_20230405_group2_p2_results.csv')
 #print(dataframe)
-
+'''
 
