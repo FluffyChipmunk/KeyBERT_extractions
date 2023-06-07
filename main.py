@@ -1,10 +1,12 @@
 # importing module
+import re
+
 import pandas as pd
 from pandas import *
 from keybert import KeyBERT
 from transformers.pipelines import pipeline
 import time
-hf_model = pipeline("feature-extraction", model="phueb/BabyBERTa-1") #BERT model trained on CHILDES data
+hf_model = KeyBERT(model = pipeline("feature-extraction", model="phueb/BabyBERTa-1")) #BERT model trained on CHILDES data
 
 
 #USED FOR TRANSCRIPTIONS ONLY
@@ -18,10 +20,10 @@ end = time.time()
 print(end-start)
 
 def Extract(lst):
-    return [item[0] for item in lst]
+    return str([item[0] for item in lst])
 
 def KeyBERTextract(text, model, max_keyphrase_length, num_keywords, max_frequency,keywordCounter):
-    kw_model = KeyBERT(model=model)
+    #kw_model = KeyBERT(model=model)
     keywords = kw_model.extract_keywords(text, keyphrase_ngram_range=(1, max_keyphrase_length), top_n=num_keywords)
     for word in keywords:
         if word[0] in keywordCounter:
@@ -60,7 +62,7 @@ def get_keywordRecs(transcriptLines, model, max_keyphrase_length, num_keywords, 
             keywordRecs.append('')
     return keywordRecs
 
-'''def get_mixedRecs(transcriptLines, model, max_keyphrase_length, num_keywords, max_frequency, max_line_length):
+def get_mixedRecs(transcriptLines, model, max_keyphrase_length, num_keywords, max_frequency, max_line_length):
     mixedRecs = []
     keywordCounter = {
     }
@@ -78,10 +80,10 @@ def get_keywordRecs(transcriptLines, model, max_keyphrase_length, num_keywords, 
             # babyBERTRecs.append(KeyBERTextract(line, hf_model, 1, 1, float('inf')))
         else:
             mixedRecs.append('')
-    return mixedRecs'''
+    return mixedRecs
 
 
-'''def get_keyphraseRecs(transcriptLines, model, max_keyphrase_length, num_keywords, max_frequency):
+def get_keyphraseRecs(transcriptLines, model, max_keyphrase_length, num_keywords, max_frequency):
     keywordRecs = []
     keywordCounter = {
     }
@@ -99,7 +101,7 @@ def get_keywordRecs(transcriptLines, model, max_keyphrase_length, num_keywords, 
             #else return get_keywordRecs(transcriptLines, 'all-MiniLM-L6-v2', 1, 1, frequency)[0]'''
 
 
-''''# reading CSV file
+# reading CSV file
 data = read_csv("20230405_group2_p2_results - Sheet6.csv", keep_default_na=False)
 
 # converting column data to list
@@ -112,12 +114,25 @@ frequency = 10
 #more realistic testing
 #frequency = 3
 
-transcriptLines = data['transcript_lst'].tolist()
-keywordRecs = get_keywordRecs(transcriptLines, 'all-MiniLM-L6-v2', 1, 1, frequency)
-mixedRecs =get_mixedRecs(transcriptLines, 'all-MiniLM-L6-v2', 1, 1, frequency, 3)
-keyphrases = get_keywordRecs(transcriptLines, 'all-MiniLM-L6-v2', 2, 1, frequency)
+def clean(Recs):
+    output = []
+    for word in Recs:
+        output.append(re.sub('[\[\]/\'{}.,]+', '', word))
+    print(output)
+    return output
 
-#babyBERTRecs = get_keywordRecs(transcriptLines, hf_model, 1, 1, frequency)
+kw_model = KeyBERT(model ='all-MiniLM-L6-v2' )
+
+transcriptLines = data['transcript_lst'].tolist()
+keywordRecs = clean(get_keywordRecs(transcriptLines, kw_model, 1, 1, frequency))
+print(keywordRecs)
+
+mixedRecs =clean(get_mixedRecs(transcriptLines, kw_model, 1, 1, frequency, 3))
+
+
+keyphrases = clean(get_keywordRecs(transcriptLines, 'all-MiniLM-L6-v2', 2, 1, frequency))
+
+babyBERTRecs = clean(get_keywordRecs(transcriptLines, hf_model, 1, 1, frequency))
 
 
 #print(keywordRecs)
@@ -130,7 +145,9 @@ dataframe['keyphraseRecs'] = keyphrases
 print(keyphrases)
 
 #dataframe['babyBERTRecs'] = babyBERTRecs
-dataframe.to_csv('output_20230405_group2_p2_results.csv')
+dataframe.to_csv('2output_20230405_group2_p2_results.csv')
 #print(dataframe)
-'''
+
+#see which matches Madeleine's recs best
+
 

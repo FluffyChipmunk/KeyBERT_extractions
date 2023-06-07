@@ -14,7 +14,7 @@ import time
 from transformers.pipelines import pipeline
 
 
-from main import get_keywordRecs
+from main import KeyBERTextract, updateKeywordCounter
 
 ''''@click.command()
 @click.option("--model", default="base", help="Model to use", type=click.Choice(["tiny","base", "small","medium","large"]))
@@ -75,6 +75,12 @@ def record_audio(audio_queue, energy, pause, dynamic_energy, save_file, temp_dir
             audio_queue.put_nowait(audio_data)
             i += 1
 
+keywordCounter = {
+
+
+}
+
+
 
 def transcribe_forever(audio_queue, result_queue, audio_model, english, verbose, save_file):
     while True:
@@ -87,15 +93,18 @@ def transcribe_forever(audio_queue, result_queue, audio_model, english, verbose,
         if not verbose:
             predicted_text = result['segments'][0]['text']
             start = time.time()
-            kw_model.extract_keywords(predicted_text, top_n=1)[0][0]
+            keyword = KeyBERTextract(predicted_text, kw_model, 1, 5, 3,keywordCounter)[0]
             end = time.time()
             print(end-start)
-            result_queue.put_nowait("You said: " + predicted_text + "\n" + "keyword: " + kw_model.extract_keywords(predicted_text, top_n=1)[0][0])
+            updateKeywordCounter(keywordCounter, keyword)
+            result_queue.put_nowait("You said: " + predicted_text + "\n" + "keyword: " + keyword)
         else:
             result_queue.put_nowait(result)
 
         if save_file:
             os.remove(audio_data)
+
+
 
 kw_model = KeyBERT(model = "all-MiniLM-L6-v2")
 #hf_model = pipeline("feature-extraction", model="phueb/BabyBERTa-1") #BERT model trained on CHILDES data
