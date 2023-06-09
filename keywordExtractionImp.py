@@ -1,5 +1,5 @@
 #basic implementation of frequency-aware keyword extraction
-#i assume this can be folded into a class
+#i assume this can be folded into a class taking the top parts as fields instantiated when the object is created
 
 from keybert import KeyBERT
 
