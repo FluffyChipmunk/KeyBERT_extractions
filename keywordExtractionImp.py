@@ -27,7 +27,7 @@ def updateKeywordCounter(word): #string --> void
 #default is top_n =5, but i want all keywords
 #this returns a list of (word, similarity) tuples.
 
-def KeyBERTextract(text, max_frequency): #string, int -->list of (string, float) tuples
+def KeyBERTextract(text, max_frequency): #string, int -->string
     keywords = kw_model.extract_keywords(text, top_n=1000)
     for word in keywords:
         if word[0] in keywordCounter:
