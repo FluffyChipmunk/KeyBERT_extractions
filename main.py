@@ -20,7 +20,7 @@ end = time.time()
 print(end-start)
 
 def Extract(lst):
-    return str([item[0] for item in lst])
+    return [item[0] for item in lst]
 
 def KeyBERTextract(text, model, max_keyphrase_length, num_keywords, max_frequency,keywordCounter):
     #kw_model = KeyBERT(model=model)
@@ -102,11 +102,11 @@ def get_keyphraseRecs(transcriptLines, model, max_keyphrase_length, num_keywords
 
 
 # reading CSV file
-data = read_csv("20230405_group2_p2_results - Sheet6.csv", keep_default_na=False)
+data = read_csv("analyzing files/20230405_group2_p2_results - Sheet6.csv", keep_default_na=False)
 
 # converting column data to list
 currentRecs = data['recommendation_lst'].tolist()
-print(currentRecs)
+#print(currentRecs)
 
 #from Uchihara et al meta analysis
 frequency = 10
@@ -114,38 +114,38 @@ frequency = 10
 #more realistic testing
 #frequency = 3
 
-def clean(Recs):
+'''def clean(Recs):
     output = []
     for word in Recs:
         output.append(re.sub('[\[\]/\'{}.,]+', '', word))
-    print(output)
-    return output
+    #print(output)
+    return output'''
 
 kw_model = KeyBERT(model ='all-MiniLM-L6-v2' )
 
 transcriptLines = data['transcript_lst'].tolist()
-keywordRecs = clean(get_keywordRecs(transcriptLines, kw_model, 1, 1, frequency))
-print(keywordRecs)
+'''keywordRecs = clean(get_keywordRecs(transcriptLines, kw_model, 1, 1, frequency))
+#print(keywordRecs)
 
 mixedRecs =clean(get_mixedRecs(transcriptLines, kw_model, 1, 1, frequency, 3))
 
 
 keyphrases = clean(get_keywordRecs(transcriptLines, 'all-MiniLM-L6-v2', 2, 1, frequency))
 
-babyBERTRecs = clean(get_keywordRecs(transcriptLines, hf_model, 1, 1, frequency))
+babyBERTRecs = clean(get_keywordRecs(transcriptLines, hf_model, 1, 1, frequency))'''
 
 
 #print(keywordRecs)
-dataframe = pd.DataFrame(transcriptLines)
+'''dataframe = pd.DataFrame(transcriptLines)
 dataframe['currentRecs'] = currentRecs
 dataframe['keywordRecs'] = keywordRecs
 dataframe['mixedRecs'] = mixedRecs
-dataframe['keyphraseRecs'] = keyphrases
+dataframe['keyphraseRecs'] = keyphrases'''
 
-print(keyphrases)
+#print(keyphrases)
 
 #dataframe['babyBERTRecs'] = babyBERTRecs
-dataframe.to_csv('2output_20230405_group2_p2_results.csv')
+'''dataframe.to_csv('2output_20230405_group2_p2_results.csv')'''
 #print(dataframe)
 
 #see which matches Madeleine's recs best

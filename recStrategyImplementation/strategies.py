@@ -1,13 +1,13 @@
+from keybert import KeyBERT
 import stanza
-import time
-
 import childespy as childes
+import pickle
 
 
-def getGlobalFrequency(word):
-    return len(childes.get_types(collection = "Eng-NA", token_type=word).index)
+#get model
+kw_model = KeyBERT(model='all-MiniLM-L6-v2')
 
-nlp = stanza.Pipeline(lang='en')
+nlp = stanza.Pipeline(lang="en")
 ENGLISH_STOP_WORDS = {'a', 'about', 'above', 'across', 'after', 'afterwards', 'again', 'against', 'ain', 'all',
                       'almost', 'alone', 'along', 'already', 'also', 'although', 'always', 'am', 'among', 'amongst',
                       'amoungst', 'amount', 'an', 'and', 'another', 'any', 'anyhow', 'anyone', 'anything', 'anyway',
@@ -42,6 +42,22 @@ ENGLISH_STOP_WORDS = {'a', 'about', 'above', 'across', 'after', 'afterwards', 'a
                       'whether', 'which', 'while', 'whither', 'who', 'whoever', 'whole', 'whom', 'whose', 'why', 'will',
                       'with', 'within', 'without', 'won', 'would', 'wouldn', 'y', 'yet', 'you', 'your', 'yours',
                       'yourself', 'yourselves'}
+#get the words and not the similarity values
+def Extract(lst): #list --> list
+    return [item[0] for item in lst]
+def KeyBERTextract(text): #string --> string
+    keywords = kw_model.extract_keywords(text, top_n=1000) #default is top_n =5, but i want all keywords. this returns a list of (word, similarity) tuples.
+    if keywords:
+        keyword = Extract(keywords)[0]
+        return keyword
+    else:
+        return "no keyword" #can change this to null or whatever works with the system.
+                            # sometimes, you don't want to recommend a word bc asl wouldn't sign the concept
+                            #ex. "the", "because", etc.
+
+def getGlobalFrequency(word):
+    return len(childes.get_types(collection = "Eng-NA", token_type=word).index)
+
 
 def retNoun(text):
     doc = nlp(text)
@@ -80,65 +96,49 @@ def retNoun(text):
     else:
         return 'new'
 
-def retPrefs(text): #assign preference values to POS
-    doc = nlp(text)
-
-    listNoun = []
-    listVerb = []
-    listAdj = []
-    listAdv = []
-    lst = [];
+with open('CHILDES_frequency_data.pkl', 'rb') as fp:
+    frequencies = pickle.load(fp)
 
 
-
-    for sent in doc.sentences:
-        for word in sent.words:
-            #if word.text not in ENGLISH_STOP_WORDS:
-                #print(word)
-                if word.upos == "NOUN":
-                    listNoun.append((word.text, 4))
-                elif word.upos == "VERB":
-                    listVerb.append((word.text, 3))
-                elif word.upos == "ADJ":
-                    listAdj.append((word.text, 2))
-                elif word.upos == "ADV":
-                    listAdv.append((word.text, 1))
-
-    if listNoun:
-        lst.extend(listNoun)
-    if listVerb:
-        lst.extend(listVerb)
-    if listAdj:
-        lst.extend(listAdj)
-    if listAdv:
-        lst.extend(listAdv)
-
-    if lst:
-        return list(set(lst))
+doc = nlp('The boat is in the water. I love the boat!')
+latest = doc.sentences[-1].words
+content_words = [word for word in latest
+                 if word.text.lower() not in ENGLISH_STOP_WORDS and word.lemma != "be"]
+max_frequency = 0
+rec_word = ''
+for word in content_words:
+    if (word.lemma, word.upos) in frequencies:
+        frequency = frequencies[(word.lemma, word.upos)]
     else:
-        return list(set(lst))
+        frequency = 0
+    if frequency > max_frequency:
+        max_frequency = frequency
+        rec_word = word
+print(rec_word)
 
-def getMostFrequent(text): #get most frequent word in sentence from getGlobalFrequency
+
+def getMostFrequent(text):
+    print(text)
     doc = nlp(text)
 
     listNoun = []
     listVerb = []
     listAdj = []
     listAdv = []
-    lst = [];
+    lst = []
 
     for sent in doc.sentences:
         for word in sent.words:
-            if word.text.lower() not in ENGLISH_STOP_WORDS and word.lemma != "be":
+            if (word.lemma, word.upos) in frequencies and word.text.lower() not in ENGLISH_STOP_WORDS and word.lemma != "be":
                 print(word)
                 if word.upos == "NOUN":
-                    listNoun.append((word.text, getGlobalFrequency(word.text)))
+                    listNoun.append((word.text, frequencies[(word.lemma, word.upos)]))
                 elif word.upos == "VERB":
-                    listVerb.append((word.text, getGlobalFrequency(word.text)))
+                    listVerb.append((word.text, frequencies[(word.lemma, word.upos)]))
                 elif word.upos == "ADJ":
-                    listAdj.append((word.text, getGlobalFrequency(word.text)))
+                    listAdj.append((word.text, frequencies[(word.lemma, word.upos)]))
                 elif word.upos == "ADV":
-                    listAdv.append((word.text, getGlobalFrequency(word.text)))
+                    listAdv.append((word.text, frequencies[(word.lemma, word.upos)]))
 
     if listNoun:
         lst.extend(listNoun)
@@ -159,12 +159,14 @@ def getMostFrequent(text): #get most frequent word in sentence from getGlobalFre
                 maxWord = word[0]
         return maxWord
     else:
-        return list(set(lst))
+        #return ''list(set(lst))''
+        return ''
 
-# sentences = ["It's a sunny day, so the duck is in the water."
-# ]
-# #start = time.time()
-# for sent in sentences:
-#     print(getMostFrequent(sent))
-# #end = time.time()
-# #print(end-start)
+
+#start = time.time()
+sentences = ["It is yellow."]
+for sentence in sentences:
+    print(getMostFrequent(sentence))
+#end = time.time()
+#print(end-start)
+

@@ -1,12 +1,13 @@
+#comparing recommendations from multiple "mixed methods"
+
+
 from pandas import *
 from keybert import KeyBERT
-from transformers.pipelines import pipeline
-import time
 import currentRecSystem
 import numpy as np
 from sklearn.preprocessing import normalize
 
-def truncatedMixExtraction(doc):
+def truncatedMixExtraction(doc): #round the probabilities of KeyBERT to nearest tenth, cull all but the best words, then use current POS to determine the rest
     keywords = kw_model.extract_keywords(doc, top_n=1000)
     rounded_keywords = []
     for keyword in keywords:
@@ -115,23 +116,61 @@ def weightedExtraction(doc, weight):
 
 
 kw_model = KeyBERT()
-doc = "and we're heading to the Genesee River."
+doc = "Lets' go to the river by the boats."
 #print(truncatedMixExtraction(doc))
-
-#print(weightedExtraction(doc, weight))
+weight = .5
+print(weightedExtraction(doc, weight))
 
 # reading CSV file
 data = read_csv("20230405_group2_p2_results - Sheet6.csv", keep_default_na=False)
+currentRecs = data['recommendation_lst'].tolist()
+globalFreq = read_csv("global frequency no stopwords.csv", keep_default_na=False)['globalFreqRecs'].tolist()
+keywordRecs = read_csv("2output_20230405_group2_p2_results.csv", keep_default_na = False)['keywordRecs'].tolist()
+
+options = [currentRecs, globalFreq, keywordRecs]
+similarityScores = []
+#compare similarity between keyBERT, globalFreq, currentRecs
+
+total = len(keywordRecs)
+
+for strat in options:
+    sim =[]
+    for strategy in options:
+        same =0
+        for idx, rec in enumerate(strat):
+            if rec.lower() == strategy[idx].lower():
+                same = same + 1
+        score = same/total
+        sim.append(score)
+    similarityScores.append(sim)
+print(similarityScores)
+
+
+
+
 
 # converting column data to list
-currentRecs = data['recommendation_lst'].tolist()
 #print(currentRecs)
+
+
+
+
+
+#global freq is 63% diff from current recs
 
 kw_model = KeyBERT(model ='all-MiniLM-L6-v2' )
 
 transcriptLines = data['transcript_lst'].tolist()
+'''globalFrequencyRecs = []
 
-truncatedRecs = []
+for line in transcriptLines:
+    if currentRecs[transcriptLines.index(line)] != '':
+        # print("LINE:"+line)
+        globalFrequencyRecs.append(currentRecSystem.getMostFrequent(line))
+    else:
+        globalFrequencyRecs.append('')'''
+
+'''truncatedRecs = []
 
 for line in transcriptLines:
     if currentRecs[transcriptLines.index(line)] != '':
@@ -174,15 +213,16 @@ for line in transcriptLines:
         weighted8.append(weightedExtraction(line, weight))
     else:
         weighted8.append('')
+'''
 
-
-dataframe = DataFrame(transcriptLines)
-dataframe['currentRecs'] = currentRecs
+#dataframe = DataFrame(transcriptLines)
+#dataframe['globalFreqRecs'] = globalFrequencyRecs
+'''dataframe['currentRecs'] = currentRecs
 dataframe['truncatedRecs'] = truncatedRecs
 dataframe['weighted2'] = weighted2
 dataframe['weighted4'] = weighted2
 dataframe['weighted4'] = weighted4
 dataframe['weighted6'] = weighted6
-dataframe['weighted8'] = weighted8
+dataframe['weighted8'] = weighted8'''
 
-dataframe.to_csv('different mixed methods.csv')
+#dataframe.to_csv('global frequency no stopwords.csv')

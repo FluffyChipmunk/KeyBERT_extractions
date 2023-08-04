@@ -1,0 +1,31 @@
+,Sentence,Ashley,Kaleb,Ekram,Madeleine,Yifan,Hecong,write down the word you would want to communicate in lowercase!,KeyBERT,POS,GlobalFreq
+0,Look at the colorful duck!,duck,duck,duck,duck,duck,,,duck,duck,Look
+1,"Quack, quack!",quack,quack,quack,quack ,quack,,,quack,Quack,quack
+2,Let's make the duck swim in the water.,swim,swim,swim,swim,swim,,,duck,duck,make
+3,Can you find the duck's beak?,beak,beak,beak,beak,beak,,,beak,ducks,ducks
+4,It's yellow and pointy!,yellow,pointy,yellow,yellow ,yellow,,,yellow,pointy,yellow
+5,"Peek-a-boo, Mr. Duck!",peek-a-boo,peek-a-boo,duck,peek-a-boo,duck,,,peekaboo,n,[]
+6,Where did you go?,where,where,go,where,go,,,did,go,[]
+7,The little house has a door.,house,door,house,house,house,,,door,house,little
+8,"Knock, knock!",knock,knock,knock,knock ,knock,,,knock,knock,knock
+9,Let's put the little people inside the house.,people,house,people,people ,people,,,inside,people,little
+10,They like to play together!,play,play,play,play,play,,,play,like,like
+11,The house has a roof.,roof,roof,roof,roof,roof,,,roof,house,house
+12,Can you touch it?,touch,touch,touch,touch,touch,,,touch,touch,touch
+13,It's soft!,soft,soft,soft,soft,soft,,,soft,soft,soft
+14,Look at the elephant!,elephant,elephant,elephant ,elephant ,elephant,,,elephant,elephant,Look
+15,He's big and strong!,strong,big,big,big ,strong,,,strong,big,big
+16,Can you make the elephant's trunk wiggle?,wiggle,trunk,trunk,trunk ,trunk,,,trunk,elephants,make
+17,"Wiggle, wiggle!",wiggle,wiggle,wiggle,wiggle ,wiggle,,,wiggle,Wiggle,Wiggle
+18,The elephant has big ears.,ears,ears,ears,ears,ears,,,elephant,elephant,big
+19,Can you flap them like the elephant?,flap,flap,flap,flap,flap,,,flap,elephant,elephant
+20,Here's a little girl.,girl,girl,girl,girl ,girl,,,girl,girl,little
+21,She's wearing a pretty dress!,pretty,dress,dress,dress,pretty,,,dress,Shes,pretty
+22,Let's make the girl walk.,walk,walk,walk,walk,walk,,,walk,girl,make
+23,Can you move her legs?,legs,legs,legs,legs,legs,,,legs,legs,legs
+24,The girl has beautiful hair.,hair,hair,girl,hair ,hair,,,hair,girl,girl
+25,Can you touch it?,touch,touch,touch,touch ,touch,,,touch,touch,touch
+26,It's soft!,soft,soft,soft,soft ,soft,,,soft,soft,soft
+27,"Look, there's a little boy!",boy,boy,boy,boy ,boy,,,little,boy,Look
+28,He's wearing a hat!,hat,hat,hat,hat,hat,,,hat,hat,hat
+29,Can you make the boy jump?,jump,jump,jump,jump ,jump,,,jump,boy,make

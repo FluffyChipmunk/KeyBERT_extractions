@@ -1,12 +1,16 @@
-import re
+#comparing the accuracy of KeyBERT, mixedRecs
+#(implemented by just defaulting to POS if KeyBERT doesn't give any recs),
+#keyphrase Recs, and recs with babyBERTa to Madeleine's human annotations
 
+
+import re
 import pandas as pd
 from pandas import *
 from keybert import KeyBERT
 from transformers.pipelines import pipeline
 import time
 
-data = read_csv("group2_p2_alloutputs.csv", keep_default_na=False)
+data = read_csv("../group2_p2_alloutputs.csv", keep_default_na=False)
 
 Madeleine = data["Madeleine's Recs"].tolist()
 
